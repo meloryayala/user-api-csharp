@@ -25,8 +25,11 @@ public class UserController : ControllerBase
         User user = _mapper.Map<User>(userDto);
         IdentityResult result = await _userManager.CreateAsync(user, userDto.Password);
 
-        if (result.Succeeded) return Ok("User was successfully registered.");
+        if (result.Succeeded)
+        {
+            return Ok("User was successfully registered.");
+        };
 
-        throw new ApplicationException("Error when registering the user.");
+        return Ok(result.Errors);
     }
 }
