@@ -1,8 +1,6 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UserApi.Data.Dtos;
-using UserApi.Models;
+using UserApi.Services;
 
 namespace UserApi.Controllers;
 
@@ -10,26 +8,17 @@ namespace UserApi.Controllers;
 [Route("[Controller]")]
 public class UserController : ControllerBase
 {
-    private IMapper _mapper;
-    private UserManager<User> _userManager;
+    private UserService _userService;
 
-    public UserController(IMapper mapper, UserManager<User> userManager)
+    public UserController(UserService userService)
     {
-        _mapper = mapper;
-        _userManager = userManager;
+        _userService = userService;
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> RegisterUser(CreateUserDto userDto)
     {
-        User user = _mapper.Map<User>(userDto);
-        IdentityResult result = await _userManager.CreateAsync(user, userDto.Password);
-
-        if (result.Succeeded)
-        {
-            return Ok("User was successfully registered.");
-        };
-
-        return Ok(result.Errors);
+        await _userService.Register(userDto);
+        return Ok("User was successfully registered.");
     }
 }

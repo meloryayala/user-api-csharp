@@ -5,5 +5,5 @@ namespace UserApi.Models;
 public class User : IdentityUser
 {
     public DateTime BornDate { get; set; }
-    public User() : base() {}
+    public User(): base() {}
 }
