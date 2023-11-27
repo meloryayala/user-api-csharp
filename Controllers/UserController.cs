@@ -15,10 +15,17 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<IActionResult> RegisterUser(CreateUserDto userDto)
     {
         await _userService.Register(userDto);
         return Ok("User was successfully registered.");
+    }
+    
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginUserDto loginUserDto)
+    {
+         var token = await _userService.Login(loginUserDto);
+         return Ok(token);
     }
 }
